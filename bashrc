@@ -9,7 +9,9 @@ alias vi=vim
 alias aura='sudo aura'
 alias sshx='ssh -XC'
 alias ls='ls -v --color=auto'
+alias emacs='emacsclient -c -a ""'
 
+export EDITOR='emacsclient -c -a "" -nw'
 
 HISTCONTROL=erasedups
 

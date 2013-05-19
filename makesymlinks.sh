@@ -10,7 +10,7 @@
 dir=~/.dotfiles                    # dotfiles directory
 olddir=~/.dotfiles/backup          # old dotfiles backup directory
 # list of files/folders to symlink in homedir
-files="emacs.d bashrc xmonad"
+files="emacs.d bashrc bash_profile xmonad"
 
 ##########
 

@@ -6,6 +6,9 @@
 (dolist (package '(
 		   better-defaults
 ;;                   haskell-mode ; use haskell-mode from git for now
+                   clojure-mode
+                   nrepl
+                   paredit
 		   ))
   (when (not (package-installed-p package))
     (package-install package)))
@@ -15,19 +18,51 @@
 (setq kill-whole-line t)
 
 
+(defun smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  ;; stolen from http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key (kbd "C-a")
+                'smarter-move-beginning-of-line)
+
+;;; Clojure
+(add-hook 'clojure-mode-hook 'paredit-mode)
+
 ;;; Haskell
 ;; Manual installation because marmalade version does not include the new interaction mode yet.
 (load "~/.emacs.d/haskell-mode-git/haskell-site-file")
 
 (custom-set-variables
-  ;; Use cabal-dev for the GHCi session. Ensures our dependencies are in scope.
- '(haskell-process-type 'cabal-dev)
- 
- ;; To enable tags generation on save.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(haskell-process-type (quote cabal-dev))
+ '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
-
- ;; To enable stylish on save.
- '(haskell-stylish-on-save t))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
 (add-hook 'haskell-cabal-mode-hook 'haskell-cabal-hook)
@@ -87,3 +122,11 @@
   (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)
   (define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
   (define-key haskell-cabal-mode-map [?\C-c ?\C-z] 'haskell-interactive-switch))
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal)))))

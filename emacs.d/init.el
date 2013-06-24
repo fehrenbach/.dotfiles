@@ -4,12 +4,13 @@
 (package-initialize)
 
 (dolist (package '(
-		   better-defaults
+                   auctex
+                   better-defaults
 ;;                   haskell-mode ; use haskell-mode from git for now
                    clojure-mode
                    nrepl
                    paredit
-		   ))
+                   ))
   (when (not (package-installed-p package))
     (package-install package)))
 
@@ -45,6 +46,20 @@ point reaches the beginning or end of the buffer, stop there."
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key (kbd "C-a")
                 'smarter-move-beginning-of-line)
+
+
+
+  ;;; AUCTeX
+(setq TeX-view-program-list '(("Okular" "okular %o")))
+(setq TeX-view-program-selection '((output-pdf "Okular")))
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;; reftex
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+
 
 ;;; Clojure
 (add-hook 'clojure-mode-hook 'paredit-mode)

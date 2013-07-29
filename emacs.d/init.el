@@ -6,7 +6,7 @@
 (dolist (package '(
                    auctex
                    better-defaults
-;;                   haskell-mode ; use haskell-mode from git for now
+                   haskell-mode
                    clojure-mode
                    nrepl
                    paredit
@@ -65,8 +65,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'clojure-mode-hook 'paredit-mode)
 
 ;;; Haskell
-;; Manual installation because marmalade version does not include the new interaction mode yet.
-(load "~/.emacs.d/haskell-mode-git/haskell-site-file")
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

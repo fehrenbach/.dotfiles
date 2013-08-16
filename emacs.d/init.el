@@ -8,6 +8,7 @@
                    better-defaults
                    haskell-mode
                    clojure-mode
+                   markdown-mode
                    nrepl
                    paredit
                    ))
@@ -75,6 +76,7 @@ point reaches the beginning or end of the buffer, stop there."
  '(haskell-process-type (quote cabal-dev))
  '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
+ '(inhibit-startup-screen t)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 

@@ -10,7 +10,7 @@
 dir=~/.dotfiles                    # dotfiles directory
 olddir=~/.dotfiles/backup          # old dotfiles backup directory
 # list of files/folders to symlink in homedir
-files="emacs.d bashrc bash_profile offlineimaprc xmonad"
+files="bashrc bash_profile emacs.d gitconfig offlineimaprc xmonad"
 
 ##########
 

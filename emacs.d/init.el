@@ -64,6 +64,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;;; Clojure
 (add-hook 'clojure-mode-hook 'paredit-mode)
+(add-to-list 'auto-mode-alist '("\\.cljs\\'" . clojure-mode))
+
 
 ;;; Haskell
 

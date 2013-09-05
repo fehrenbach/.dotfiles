@@ -18,6 +18,8 @@
 
 (setq kill-whole-line t)
 
+(global-visual-line-mode 1)
+
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -67,18 +69,16 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 ;;; Haskell
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(haskell-process-type (quote cabal-dev))
- '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
 (add-hook 'haskell-cabal-mode-hook 'haskell-cabal-hook)

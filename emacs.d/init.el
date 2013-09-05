@@ -8,6 +8,7 @@
                    better-defaults
                    haskell-mode
                    clojure-mode
+                   markdown-mode
                    nrepl
                    paredit
                    ))
@@ -50,8 +51,46 @@ point reaches the beginning or end of the buffer, stop there."
                 'smarter-move-beginning-of-line)
 
 
+;;; Mu4e
+(require 'mu4e)
 
-  ;;; AUCTeX
+(setq
+ ;; offlineimap runs as a service
+ mu4e-get-mail-command "true"
+ mu4e-update-interval 300
+
+ mu4e-maildir "~/Documents/Mail"
+ mu4e-sent-folder "/Gmail/Sent Mail"
+ mu4e-drafts-folder "/Gmail/Drafts"
+ mu4e-trash-folder "/Gmail/Bin"
+ mu4e-refile-folder "/Gmail/All Mail"
+
+ user-mail-address "stefan.fehrenbach@gmail.com")
+
+;; sending with msmtp
+;; pirated from http://ionrock.org/emacs-email-and-mu.html
+(setq
+ message-send-mail-function 'message-send-mail-with-sendmail
+ message-sendmail-envelope-from 'header
+ sendmail-program "/usr/bin/msmtp"
+ user-full-name "Stefan Fehrenbach")
+
+(defun choose-msmtp-account ()
+  (if (message-mail-p)
+      (save-excursion
+        (let*
+            ((from (save-restriction
+                     (message-narrow-to-headers)
+                     (message-fetch-field "from")))
+             (account
+              (cond
+               ((string-match "stefan.fehrenba@gmail.com" from) "Gmail")
+               ((string-match "fehrenbach@mathematik.uni-marburg.de" from) "UniMR"))))
+          (setq message-sendmail-extra-arguments (list '"-a" account))))))
+
+(add-hook 'message-send-mail-hook 'choose-msmtp-account)
+
+;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))
 (setq TeX-view-program-selection '((output-pdf "Okular")))
 (setq TeX-auto-save t)
@@ -69,17 +108,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 ;;; Haskell
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(haskell-process-type (quote cabal-dev))
- '(haskell-tags-on-save t)
- '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))
-
 (add-hook 'haskell-mode-hook 'haskell-hook)
 (add-hook 'haskell-cabal-mode-hook 'haskell-cabal-hook)
 
@@ -139,6 +167,19 @@ point reaches the beginning or end of the buffer, stop there."
   (define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
   (define-key haskell-cabal-mode-map [?\C-c ?\C-z] 'haskell-interactive-switch))
 
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(haskell-process-type (quote cabal-dev))
+ '(haskell-stylish-on-save t)
+ '(haskell-tags-on-save t)
+ '(inhibit-startup-screen t)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
+ '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

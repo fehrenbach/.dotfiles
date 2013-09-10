@@ -4,6 +4,7 @@
 (package-initialize)
 
 (dolist (package '(
+                   ace-jump-mode
                    auctex
                    better-defaults
                    haskell-mode
@@ -20,6 +21,9 @@
 (setq kill-whole-line t)
 
 (global-visual-line-mode 1)
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
 
 
 (defun smarter-move-beginning-of-line (arg)

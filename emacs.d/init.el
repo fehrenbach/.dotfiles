@@ -53,8 +53,7 @@ point reaches the beginning or end of the buffer, stop there."
 (require 'mu4e)
 
 (setq
- ;; offlineimap runs as a service
- mu4e-get-mail-command "true"
+ mu4e-get-mail-command "offlineimap"
  mu4e-update-interval 300
 
  mu4e-maildir "~/Documents/Mail"

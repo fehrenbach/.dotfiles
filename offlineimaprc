@@ -1,14 +1,11 @@
 [general]
 accounts = Gmail,UniMR
 maxsyncaccounts = 2
-ui = quiet
 
 [Account Gmail]
 localrepository = GmailLocal
 remoterepository = GmailRemote
 status_backend = sqlite
-autorefresh = 5
-quick = 10
 
 [Repository GmailLocal]
 type = Maildir
@@ -21,15 +18,11 @@ remoteuser = stefan.fehrenbach
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 realdelete = no
 nametrans = lambda folder: re.sub('\[Google Mail\]/', '', folder)
-keepalive = 60
-holdconnectionopen = yes
 
 [Account UniMR]
 localrepository = UniMRLocal
 remoterepository = UniMRRemote
 status_backend = sqlite
-autorefresh = 5
-quick = 10
 
 [Repository UniMRLocal]
 type = Maildir
@@ -42,5 +35,3 @@ remoteuser = fehrenbach
 ssl = yes
 cert_fingerprint = 8220d597887d7dd8830c0cceb4ba80f31fba09ee
 realdelete = no
-keepalive = 60
-holdconnectionopen = yes

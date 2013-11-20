@@ -4,6 +4,7 @@
 (package-initialize)
 
 (dolist (package '(
+                   ace-jump-mode
                    auctex
                    better-defaults
                    haskell-mode
@@ -18,6 +19,11 @@
 (global-set-key "\C-z" 'undo)
 
 (setq kill-whole-line t)
+
+(global-visual-line-mode 1)
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
 
 
 (defun smarter-move-beginning-of-line (arg)
@@ -165,8 +171,6 @@ point reaches the beginning or end of the buffer, stop there."
   (define-key haskell-cabal-mode-map [?\C-c ?\C-z] 'haskell-interactive-switch))
 
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -177,7 +181,8 @@ point reaches the beginning or end of the buffer, stop there."
  '(haskell-tags-on-save t)
  '(inhibit-startup-screen t)
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

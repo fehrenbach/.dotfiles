@@ -24,7 +24,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 myKeys =
  [((win, xK_b), spawn "chromium"), -- browser on win+b
   ((win, xK_r), spawn "konsole"),
-  ((win, xK_e), spawn "emacsclient -c -a \"\""),
+  ((win, xK_e), spawn "emacs"),
     -- Restart xmonad
    --((win, xK_q), spawn "xmonad --recompile; xmonad --restart"),
    -- close focused window

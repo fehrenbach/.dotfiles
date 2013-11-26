@@ -59,8 +59,7 @@ point reaches the beginning or end of the buffer, stop there."
 (require 'mu4e)
 
 (setq
- ;; offlineimap runs as a service
- mu4e-get-mail-command "true"
+ mu4e-get-mail-command "offlineimap"
  mu4e-update-interval 300
 
  mu4e-maildir "~/Documents/Mail"
@@ -144,7 +143,7 @@ point reaches the beginning or end of the buffer, stop there."
   ;; Contextually do clever things on the space key, in particular:
   ;;   1. Complete imports, letting you choose the module name.
   ;;   2. Show the type of the symbol after the space.
-  (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
+;  (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
 
   ;; Jump to the imports. Keep tapping to jump between import
   ;; groups. C-u f8 to jump back again.
@@ -191,4 +190,4 @@ point reaches the beginning or end of the buffer, stop there."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal)))))
+ '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 98 :width normal)))))

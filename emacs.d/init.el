@@ -1,17 +1,17 @@
 (require 'package)
 (add-to-list 'package-archives
-  '("marmalade" . "http://marmalade-repo.org/packages/"))
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
-(dolist (package '(
-                   ace-jump-mode
+(dolist (package '(ace-jump-mode
                    auctex
                    better-defaults
-                   haskell-mode
                    clojure-mode
+                   cider
+                   haskell-mode
+                   magit
                    markdown-mode
-                   nrepl
-                   paredit
+		   paredit
                    ))
   (when (not (package-installed-p package))
     (package-install package)))
@@ -87,8 +87,10 @@ point reaches the beginning or end of the buffer, stop there."
                      (message-fetch-field "from")))
              (account
               (cond
-               ((string-match "stefan.fehrenba@gmail.com" from) "Gmail")
-               ((string-match "fehrenbach@mathematik.uni-marburg.de" from) "UniMR"))))
+               ;; care, string-match takes a regexp ^.^
+               ((string-match "stefan\.fehrenbach@gmail\.com" from) "Gmail")
+               ((string-match "fehrenbach@mathematik\.uni-marburg\.de" from) "UniMR")
+               (:else (error "Unrecognized address in `from` field: `%s`. Try putting it in choose-msmtp-account in init.el" from)))))
           (setq message-sendmail-extra-arguments (list '"-a" account))))))
 
 (add-hook 'message-send-mail-hook 'choose-msmtp-account)
@@ -96,6 +98,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))
 (setq TeX-view-program-selection '((output-pdf "Okular")))
+(setq TeX-PDF-mode t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -106,8 +109,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 ;;; Clojure
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-to-list 'auto-mode-alist '("\\.cljs\\'" . clojure-mode))
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'subword-mode)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
 
 
 ;;; Haskell
@@ -176,6 +181,7 @@ point reaches the beginning or end of the buffer, stop there."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(colon-double-space nil)
  '(haskell-process-type (quote cabal-dev))
  '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)

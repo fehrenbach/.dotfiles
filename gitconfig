@@ -3,3 +3,5 @@
 	name = Stefan Fehrenbach
 [color]
 	ui = true
+[push]
+	default = simple

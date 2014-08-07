@@ -12,7 +12,7 @@ alias ls='ls -v --color=auto'
 alias cabal='echo NO NO NO NO! Use cabal-dev!
 '
 
-export EDITOR='emacsclient -c -a "" -nw'
+export EDITOR='emacs -nw'
 
 HISTCONTROL=erasedups
 

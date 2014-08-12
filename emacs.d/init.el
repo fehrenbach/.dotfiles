@@ -187,6 +187,7 @@ point reaches the beginning or end of the buffer, stop there."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(colon-double-space nil)
+ '(clojure-defun-indents (quote (match)))
  '(haskell-process-type (quote cabal-dev))
  '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)

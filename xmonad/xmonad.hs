@@ -16,6 +16,7 @@ import XMonad.Util.WindowProperties (getProp32s)
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio
+import Control.Monad
 
 win = mod4Mask
 
@@ -53,12 +54,14 @@ myKeys =
         | (key, sc) <- zip [xK_comma, xK_period, xK_p] [0..2]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-myLayoutHook = smartBorders $ desktopLayoutModifiers $ onWorkspace "8" (spiral (1/2)) (reflectHoriz tall) ||| Mirror tall ||| Full
+myLayoutHook = ({- smartBorders $ -} desktopLayoutModifiers $ (reflectHoriz tall)) ||| ({- smartBorders $ -} desktopLayoutModifiers $ Mirror tall) ||| noBorders Full
   where tall = (Tall 1 (3/100) (1/2))
 
 -- mouse pointer follows focus
 -- to reactivate: readd to the config! not just uncomment the following line
 -- myLogHook = updatePointer (Relative 0.618 0.618)
+
+--liftedNot = liftM not
 
 myManageHook = composeAll
                [className =? "Choqok" --> doF (W.shift "8"), 
@@ -67,9 +70,11 @@ myManageHook = composeAll
                 className =? "Skype" --> doF (W.shift "8"),
                 className =? "Kontact" --> doF (W.shift "7"),
                 className =? "Vlc" --> doFloat,
-                className =? "Klipper" --> doFloat,
+                className =? "Klipper" --> doFloat
+--                className =? "dota_linux" --> doFullFloat,
 --                isFullscreen --> doF W.focusDown <+> doFullFloat
-                isFullscreen --> doFullFloat]
+--                isFullscreen <&&> liftedNot (className =? "dota_linux") --> doFullFloat
+                ]
 
 myStartupHook = do
 --                  spawn "kioclient exec /home/stefan/bin/Facebook.desktop"

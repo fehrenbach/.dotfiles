@@ -1,3 +1,8 @@
+;; ESS is not in MELPA or any of the other repos.
+;; Install AUR package `emacs-ess`.
+(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
+(require 'ess-site)
+
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)

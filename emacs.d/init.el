@@ -60,7 +60,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (setq
  mu4e-get-mail-command "offlineimap"
- mu4e-update-interval 300
+ mu4e-update-interval 3600
 
  mu4e-maildir "~/Documents/Mail"
  mu4e-sent-folder "/Gmail/Sent Mail"
@@ -68,7 +68,10 @@ point reaches the beginning or end of the buffer, stop there."
  mu4e-trash-folder "/Gmail/Bin"
  mu4e-refile-folder "/Gmail/All Mail"
 
- user-mail-address "stefan.fehrenbach@gmail.com")
+ user-mail-address "stefan.fehrenbach@gmail.com"
+
+ mu4e-headers-skip-duplicates t)
+
 
 ;; sending with msmtp
 ;; pirated from http://ionrock.org/emacs-email-and-mu.html
@@ -96,6 +99,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))
 (setq TeX-view-program-selection '((output-pdf "Okular")))
+(setq TeX-PDF-mode t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)

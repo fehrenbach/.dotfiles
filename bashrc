@@ -9,8 +9,6 @@ alias vi=vim
 alias aura='sudo aura'
 alias sshx='ssh -XC'
 alias ls='ls -v --color=auto'
-alias cabal='echo NO NO NO NO! Use cabal-dev!
-'
 
 export EDITOR='emacs -nw'
 

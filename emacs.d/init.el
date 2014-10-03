@@ -3,6 +3,9 @@
 ;(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
 ;(require 'ess-site)
 
+;; directory for emacs lisp not in any repository
+(add-to-list 'load-path "~/.emacs.d/local/")
+
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -102,6 +105,13 @@ point reaches the beginning or end of the buffer, stop there."
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 (add-hook 'haskell-mode-hook 'turn-on-hi2)
+
+;;; Prolog
+(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(setq prolog-system 'swi)
+(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
+                              auto-mode-alist))
 
 
 (custom-set-variables

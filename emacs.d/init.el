@@ -1,7 +1,7 @@
 ;; ESS is not in MELPA or any of the other repos.
 ;; Install AUR package `emacs-ess`.
-(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
-(require 'ess-site)
+;(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
+;(require 'ess-site)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -61,49 +61,6 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-a")
                 'smarter-move-beginning-of-line)
 
-
-;;; Mu4e
-(require 'mu4e)
-
-(setq
- mu4e-get-mail-command "offlineimap"
- mu4e-update-interval 3600
-
- mu4e-maildir "~/Documents/Mail"
- mu4e-sent-folder "/Gmail/Sent Mail"
- mu4e-drafts-folder "/Gmail/Drafts"
- mu4e-trash-folder "/Gmail/Bin"
- mu4e-refile-folder "/Gmail/All Mail"
-
- user-mail-address "stefan.fehrenbach@gmail.com"
-
- mu4e-headers-skip-duplicates t)
-
-
-;; sending with msmtp
-;; pirated from http://ionrock.org/emacs-email-and-mu.html
-(setq
- message-send-mail-function 'message-send-mail-with-sendmail
- message-sendmail-envelope-from 'header
- sendmail-program "/usr/bin/msmtp"
- user-full-name "Stefan Fehrenbach")
-
-(defun choose-msmtp-account ()
-  (if (message-mail-p)
-      (save-excursion
-        (let*
-            ((from (save-restriction
-                     (message-narrow-to-headers)
-                     (message-fetch-field "from")))
-             (account
-              (cond
-               ;; care, string-match takes a regexp ^.^
-               ((string-match "stefan\.fehrenbach@gmail\.com" from) "Gmail")
-               ((string-match "fehrenbach@mathematik\.uni-marburg\.de" from) "UniMR")
-               (:else (error "Unrecognized address in `from` field: `%s`. Try putting it in choose-msmtp-account in init.el" from)))))
-          (setq message-sendmail-extra-arguments (list '"-a" account))))))
-
-(add-hook 'message-send-mail-hook 'choose-msmtp-account)
 
 ;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))

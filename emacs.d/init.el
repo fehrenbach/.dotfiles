@@ -22,6 +22,7 @@
                    magit
                    markdown-mode
 		   paredit
+                   tuareg ; ocaml mode
                    ))
   (when (not (package-installed-p package))
     (package-install package)))

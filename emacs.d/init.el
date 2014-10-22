@@ -114,6 +114,9 @@ point reaches the beginning or end of the buffer, stop there."
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
                               auto-mode-alist))
 
+;;; Links (in .emacs.d/local
+(autoload 'links-mode "Links" "Major mode for editing Links programs." t)
+(add-to-list 'auto-mode-alist '("\\.links$" . links-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

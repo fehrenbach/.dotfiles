@@ -9,6 +9,7 @@ alias vi=vim
 alias aura='sudo aura'
 alias sshx='ssh -XC'
 alias ls='ls -v --color=auto'
+alias links='rlwrap links'
 
 export EDITOR='emacs -nw'
 

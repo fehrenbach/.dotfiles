@@ -65,6 +65,20 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-a")
                 'smarter-move-beginning-of-line)
 
+;; Stolen from here
+;; http://stackoverflow.com/a/9697222
+(defun comment-or-uncomment-region-or-line ()
+    "Comments or uncomments the region or the current line if there's no active region."
+    (interactive)
+    (let (beg end)
+        (if (region-active-p)
+            (setq beg (region-beginning) end (region-end))
+            (setq beg (line-beginning-position) end (line-end-position)))
+        (comment-or-uncomment-region beg end)
+        (next-logical-line)))
+
+(global-set-key (kbd "C-c c") 'comment-or-uncomment-region-or-line)
+
 
 ;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))
@@ -114,24 +128,25 @@ point reaches the beginning or end of the buffer, stop there."
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
                               auto-mode-alist))
 
-;;; Links (in .emacs.d/local
-(autoload 'links-mode "Links" "Major mode for editing Links programs." t)
-(add-to-list 'auto-mode-alist '("\\.links$" . links-mode))
+;;; Links
+(add-to-list 'load-path "~/src/links/")
+(require 'links-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(colon-double-space nil)
  '(clojure-defun-indents (quote (match)))
+ '(colon-double-space nil)
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
  '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote cabal-repl))
  '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
- '(haskell-process-type 'cabal-repl)
  '(inhibit-startup-screen t)
+ '(links-cli-arguments "--config=config")
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))

@@ -21,7 +21,8 @@
                    hi2 ;; haskell indentation 2nd try
                    magit
                    markdown-mode
-		   paredit
+                   multiple-cursors
+                   paredit
                    tuareg ; ocaml mode
                    ))
   (when (not (package-installed-p package))

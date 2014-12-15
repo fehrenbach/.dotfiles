@@ -81,6 +81,9 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region-or-line)
 
 
+;;; org-mode
+(global-set-key (kbd "C-c a") 'org-agenda)
+
 ;;; AUCTeX
 (setq TeX-view-program-list '(("Okular" "okular %o")))
 (setq TeX-view-program-selection '((output-pdf "Okular")))
@@ -148,6 +151,7 @@ point reaches the beginning or end of the buffer, stop there."
  '(haskell-tags-on-save t)
  '(inhibit-startup-screen t)
  '(links-cli-arguments "--config=config")
+ '(org-agenda-files (quote ("~/org/uni.org" "~/org/india2015.org")))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))

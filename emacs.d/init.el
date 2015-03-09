@@ -12,12 +12,14 @@
 (package-initialize)
 
 (dolist (package '(ace-jump-mode
+                   aggressive-indent
                    auctex
                    better-defaults
                    clojure-mode
                    cider
                    ghc
                    haskell-mode
+                   helm
                    hi2 ;; haskell indentation 2nd try
                    magit
                    markdown-mode
@@ -32,7 +34,7 @@
 
 (setq kill-whole-line t)
 
-(global-visual-line-mode 1)
+;;(global-visual-line-mode 1)
 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
@@ -81,6 +83,10 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region-or-line)
 
 
+;;; helm
+(require 'helm-config)
+(helm-mode 1)
+
 ;;; org-mode
 (global-set-key (kbd "C-c a") 'org-agenda)
 
@@ -98,8 +104,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 ;;; Clojure
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(add-hook 'cider-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
@@ -153,6 +160,7 @@ point reaches the beginning or end of the buffer, stop there."
  '(inhibit-startup-screen t)
  '(links-cli-arguments "--config=config")
  '(org-agenda-files (quote ("~/org/uni.org" "~/org/india2015.org")))
+ '(sentence-end-double-space nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil right-curly-arrow))))

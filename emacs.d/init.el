@@ -91,13 +91,26 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 ;;; AUCTeX
-(setq TeX-view-program-list '(("Okular" "okular %o")))
-(setq TeX-view-program-selection '((output-pdf "Okular")))
 (setq TeX-PDF-mode t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;; SyncTeX stuff: http://www.kevindemarco.com/2013/04/24/emacs-auctex-synctex-okular-on-ubuntu-12-04/
+;; In Okular set editor to: emacsclient -a emacs --no-wait +%l %f
+;; Use shift + left click in Okular to jump to the correct line in Emacs.
+(add-hook 'LaTeX-mode-hook 'server-start)
+;; Enable synctex correlation
+(setq TeX-source-correlate-method 'synctex)
+;; Enable synctex generation. Even though the command shows
+;; as "latex" pdflatex is actually called
+(custom-set-variables '(LaTeX-command "latex -synctex=1") )
+
+(setq TeX-view-program-selection
+ '((output-pdf "Okular")))
+(setq TeX-view-program-list
+ '(("PDF Viewer" "okular --unique %o#src:%n%b")))
+
 ;; reftex
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
@@ -151,6 +164,7 @@ point reaches the beginning or end of the buffer, stop there."
  '(TeX-command-extra-options "-shell-escape")
  '(clojure-defun-indents (quote (match)))
  '(colon-double-space nil)
+ '(compilation-scroll-output (quote first-error))
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
  '(haskell-process-suggest-remove-import-lines t)

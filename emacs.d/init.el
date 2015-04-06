@@ -21,6 +21,7 @@
                    haskell-mode
                    helm
                    hi2 ;; haskell indentation 2nd try
+                   idris-mode
                    magit
                    markdown-mode
                    multiple-cursors
@@ -83,6 +84,9 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region-or-line)
 
 
+;;; flyspell
+(add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
+
 ;;; helm
 (require 'helm-config)
 (helm-mode 1)
@@ -97,6 +101,10 @@ point reaches the beginning or end of the buffer, stop there."
 (setq-default TeX-master nil)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 ;; SyncTeX stuff: http://www.kevindemarco.com/2013/04/24/emacs-auctex-synctex-okular-on-ubuntu-12-04/
+(setq TeX-view-program-selection
+ '((output-pdf "Okular")))
+(setq TeX-view-program-list
+ '(("Okular" "okular --unique %o#src:%n%b")))
 ;; In Okular set editor to: emacsclient -a emacs --no-wait +%l %f
 ;; Use shift + left click in Okular to jump to the correct line in Emacs.
 (add-hook 'LaTeX-mode-hook 'server-start)
@@ -106,10 +114,6 @@ point reaches the beginning or end of the buffer, stop there."
 ;; as "latex" pdflatex is actually called
 (custom-set-variables '(LaTeX-command "latex -synctex=1") )
 
-(setq TeX-view-program-selection
- '((output-pdf "Okular")))
-(setq TeX-view-program-list
- '(("PDF Viewer" "okular --unique %o#src:%n%b")))
 
 ;; reftex
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)

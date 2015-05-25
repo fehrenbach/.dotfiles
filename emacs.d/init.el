@@ -3,12 +3,16 @@
 ;(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
 ;(require 'ess-site)
 
+;;; Proofgeneral from AUR package proofgeneral
+(load-file "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
+
 ;; directory for emacs lisp not in any repository
 (add-to-list 'load-path "~/.emacs.d/local/")
 
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;(package-list-packages)
 (package-initialize)
 
 (dolist (package '(ace-jump-mode
@@ -16,13 +20,13 @@
                    auctex
                    better-defaults
                    clojure-mode
-                   cider
+                   ;cider ;; buggy?!
                    ghc
                    haskell-mode
-                   helm
+                   ;helm ;; buggy?!
                    hi2 ;; haskell indentation 2nd try
                    idris-mode
-                   magit
+                   ;magit ;; buggy?!
                    markdown-mode
                    multiple-cursors
                    paredit
@@ -36,7 +40,6 @@
 (setq kill-whole-line t)
 
 ;;(global-visual-line-mode 1)
-
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
 
@@ -87,9 +90,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; flyspell
 (add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
 
-;;; helm
-(require 'helm-config)
-(helm-mode 1)
+;; ;;; helm
+;; (require 'helm-config)
+;; (helm-mode 1)
 
 ;;; org-mode
 (global-set-key (kbd "C-c a") 'org-agenda)

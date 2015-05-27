@@ -114,10 +114,15 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Enable synctex correlation
 (setq TeX-source-correlate-method 'synctex)
 
-
 ;; reftex
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
+
+
+;;; Agda
+(when (executable-find "agda-mode")
+  (load-file (let ((coding-system-for-read 'utf-8))
+                  (shell-command-to-string "agda-mode locate"))))
 
 
 ;;; Clojure

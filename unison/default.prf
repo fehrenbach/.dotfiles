@@ -1,0 +1,5 @@
+root = /home/stefan
+root = ssh://s1437649@staff.login.inf.ed.ac.uk/
+
+path = Documents
+path = src

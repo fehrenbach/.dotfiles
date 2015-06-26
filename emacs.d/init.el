@@ -11,7 +11,7 @@
 
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 ;(package-list-packages)
 (package-initialize)
 
@@ -19,15 +19,16 @@
                    aggressive-indent
                    auctex
                    better-defaults
-                   ;cider ;; buggy?!
-                   circe
+                   cider ;; buggy?!
+;                   circe
                    clojure-mode
+                   company
                    ghc
                    haskell-mode
-                   ;helm ;; buggy?!
+                   helm ;; buggy?!
                    hi2 ;; haskell indentation 2nd try
                    idris-mode
-                   ;magit ;; buggy?!
+                   magit ;; buggy?!
                    markdown-mode
                    multiple-cursors
                    paredit
@@ -42,6 +43,8 @@
 
 ;;(global-visual-line-mode 1)
 (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
+
+;(add-hook 'after-init-hook 'global-company-mode)
 
 
 (defun smarter-move-beginning-of-line (arg)
@@ -87,12 +90,14 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-c s") 'magit-status)
 
+(setq magit-last-seen-setup-instructions "1.4.0")
+
 ;;; flyspell
 (add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
 
 ;; ;;; helm
-;; (require 'helm-config)
-;; (helm-mode 1)
+(require 'helm-config)
+(helm-mode 1)
 
 ;;; org-mode
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -134,25 +139,38 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 ;;; Haskell
+
+;; structured haskell mode
+;; (installed in cabal sandbox in ~/opt, binary sym-linked to ~/bin)
+(add-to-list 'load-path "/home/stefan/opt/structured-haskell-mode/elisp")
+(require 'shm)
+
+(set-face-background 'shm-current-face "#02b1f2")
+
+(add-hook 'haskell-mode-hook 'structured-haskell-mode)
+
+
+
+
 ;; haskell-mode
-(eval-after-load 'haskell-mode '(progn
-  (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-  (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-  (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
-  (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
-  (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
-  (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
-  (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
-(eval-after-load 'haskell-cabal '(progn
-  (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-  (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-  (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-  (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
-;; ghc-mod
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-(add-hook 'haskell-mode-hook 'turn-on-hi2)
+;; (eval-after-load 'haskell-mode '(progn
+;;   (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+;;   (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+;;   (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
+;;   (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
+;;   (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
+;;   (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
+;;   (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
+;; (eval-after-load 'haskell-cabal '(progn
+;;   (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+;;   (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+;;   (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+;;   (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
+;; ;; ghc-mod
+;; (autoload 'ghc-init "ghc" nil t)
+;; (autoload 'ghc-debug "ghc" nil t)
+;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;; (add-hook 'haskell-mode-hook 'turn-on-hi2)
 
 ;;; Prolog
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)

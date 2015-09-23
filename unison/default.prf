@@ -3,3 +3,7 @@ root = ssh://s1437649@staff.ssh.inf.ed.ac.uk/
 
 path = Documents
 path = src
+
+ignore = Name *.o
+ignore = Name *.a
+ignore = Path Documents/Mail

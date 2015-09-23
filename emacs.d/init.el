@@ -97,6 +97,21 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; org-mode
 (global-set-key (kbd "C-c a") 'org-agenda)
 
+
+;;; mu4e
+(require 'mu4e)
+(setq
+ mu4e-maildir "~/Documents/Mail"
+ mu4e-sent-folder "/Sent Mail"
+ mu4e-drafts-folder "/Drafts"
+ mu4e-trash-folder "/Bin"
+ mu4e-refile-folder "/All Mail"
+ mu4e-headers-include-related t
+ mu4e-headers-skip-duplicates t
+ mu4e-update-interval 300
+ mu4e-change-filenames-when-moving t)
+
+
 ;;; AUCTeX
 (setq TeX-PDF-mode t)
 (setq TeX-auto-save t)

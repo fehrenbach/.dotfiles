@@ -1,0 +1,66 @@
+IMAPAccount gmail
+# Address to connect to
+Host imap.gmail.com
+User stefan.fehrenbach
+#PassCmd "sed -n -e 's,^machine imap\.gmail\.com login stefan\.fehrenbach password \(.*\),\1,p' /home/stefan/.netrc"
+PassCmd "/home/stefan/bin/getgmailpasswd"
+# To store the password in an encrypted file use PassCmd instead of Pass
+# PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mailpass.gpg"
+#
+# Use SSL
+SSLType IMAPS
+# The following line should work. If get certificate errors, uncomment the two following lines and read the "Troubleshooting" section.
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+#CertificateFile ~/.cert/imap.gmail.com.pem
+#CertificateFile ~/.cert/Equifax_Secure_CA.pem
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+# The trailing "/" is important
+Path ~/Documents/Mail/
+Inbox ~/Documents/Mail/INBOX
+
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+Expunge Both
+
+Channel gmail-noprefix
+Master :gmail-remote:
+Slave :gmail-local:
+# Exclude everything under the internal [Gmail] folder, except the interesting folders
+# Patterns * ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail"
+# Or include everything
+#Patterns *
+Patterns * !"[Google Mail]*" !Drafts !"All Mail" !"Sent Mail" !Chats !Bin
+
+Channel gmail-sent
+Master :gmail-remote:"[Google Mail]/Sent Mail"
+Slave :gmail-local:"Sent Mail"
+
+Channel gmail-all-mail
+Master :gmail-remote:"[Google Mail]/All Mail"
+Slave :gmail-local:"All Mail"
+
+Channel gmail-drafts
+Master :gmail-remote:"[Google Mail]/Drafts"
+Slave :gmail-local:"Drafts"
+
+Channel gmail-chats
+Master :gmail-remote:"[Google Mail]/Chats"
+Slave :gmail-local:"Chats"
+
+Channel gmail-bin
+Master :gmail-remote:"[Google Mail]/Bin"
+Slave :gmail-local:"Bin"
+
+Group gmail
+Channel gmail-bin
+Channel gmail-noprefix
+Channel gmail-sent
+Channel gmail-all-mail
+Channel gmail-drafts
+Channel gmail-chats

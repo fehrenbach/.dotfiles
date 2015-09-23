@@ -157,13 +157,12 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; structured haskell mode
 ;; (installed in cabal sandbox in ~/opt, binary sym-linked to ~/bin)
-(add-to-list 'load-path "/home/stefan/opt/structured-haskell-mode/elisp")
-(require 'shm)
+;(add-to-list 'load-path "/home/stefan/opt/structured-haskell-mode/elisp")
+;(require 'shm)
 
-(set-face-background 'shm-current-face "#02b1f2")
+;(set-face-background 'shm-current-face "#02b1f2")
 
-(add-hook 'haskell-mode-hook 'structured-haskell-mode)
-
+;(add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
 
 

@@ -19,8 +19,8 @@ Account gmail
 
 MaildirStore gmail-local
 # The trailing "/" is important
-Path ~/Documents/Mail/
-Inbox ~/Documents/Mail/INBOX
+Path ~/Mail/
+Inbox ~/Mail/INBOX
 
 # Automatically create missing mailboxes, both locally and on the server
 Create Both

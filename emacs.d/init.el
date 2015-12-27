@@ -9,6 +9,10 @@
 ;; directory for emacs lisp not in any repository
 (add-to-list 'load-path "~/.emacs.d/local/")
 
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/local/emacs-color-theme-solarized/")
+(load-theme 'solarized t)
+
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
@@ -20,7 +24,7 @@
                    auctex
                    better-defaults
                    cider ;; buggy?!
-;                   circe
+                   circe
                    clojure-mode
                    company
                    ghc
@@ -33,11 +37,18 @@
                    multiple-cursors
                    paredit
                    tuareg ; ocaml mode
+
+                   ;; dependencies of lean-mode
+                   dash-functional
+                   f
+                   lua-mode
+                   flycheck
                    ))
   (when (not (package-installed-p package))
     (package-install package)))
 
 (global-set-key "\C-z" 'undo)
+(global-unset-key "\C-x\C-z")
 
 (setq kill-whole-line t)
 
@@ -106,15 +117,63 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; mu4e
 (require 'mu4e)
 (setq
- mu4e-maildir "~/Documents/Mail"
- mu4e-sent-folder "/Sent Mail"
+ mu4e-change-filenames-when-moving t
  mu4e-drafts-folder "/Drafts"
- mu4e-trash-folder "/Bin"
- mu4e-refile-folder "/All Mail"
  mu4e-headers-include-related t
  mu4e-headers-skip-duplicates t
+ mu4e-maildir "~/Mail"
+ ;; mu4e-refile-folder "/All Mail" ; see below
+ mu4e-sent-folder "/Sent Mail"
+ mu4e-trash-folder "/Bin"
  mu4e-update-interval 300
- mu4e-change-filenames-when-moving t)
+ mu4e-user-mail-address-list '("stefan.fehrenbach@gmail.com" "stefan.fehrenbach@ed.ac.uk" "s1437649@sms.ed.ac.uk"))
+
+(add-to-list 'mu4e-bookmarks
+             '("maildir:/INBOX" "Inbox" ?i))
+
+(setq mu4e-refile-folder
+      (lambda (msg)
+        (cond
+         ;; messages sent by me go to the sent folder
+         ((find-if (lambda (addr) (mu4e-message-contact-field-matches msg :from addr))
+                   mu4e-user-mail-address-list)
+          mu4e-sent-folder)
+         ;; everything else goes to /archive
+         ;; important to have a catch-all at the end!
+         (t "/All Mail"))))
+
+(global-set-key (kbd "C-c m") 'mu4e)
+
+;;; Circe
+(setq circe-network-options
+      '(("Freenode"
+         :nick "fehrenbach"
+         :channels ("#clojure" "#haskell" "#idris"))
+        ("mozilla"
+         :host "irc.mozilla.org"
+         :port 6697
+         :nickserv-mask "^NickServ!NickServ@services\\.$"
+         :tls t
+         :nick "fehrenbach"
+         :channels ("#rust"))))
+
+(setq circe-reduce-lurker-spam t)
+
+(setq
+ lui-time-stamp-position 'right-margin
+ lui-time-stamp-format "%H:%M"
+ lui-fill-type nil)
+
+(add-hook 'lui-mode-hook 'my-lui-setup)
+(defun my-lui-setup ()
+  (setq
+   fringes-outside-margins t
+   right-margin-width 5
+   word-wrap t
+   wrap-prefix "    "))
+
+(require 'circe-color-nicks)
+(enable-circe-color-nicks)
 
 
 ;;; AUCTeX
@@ -123,6 +182,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'variable-pitch-mode)
 ;; SyncTeX stuff: http://www.kevindemarco.com/2013/04/24/emacs-auctex-synctex-okular-on-ubuntu-12-04/
 (setq TeX-view-program-selection
  '((output-pdf "Okular")))
@@ -151,6 +211,21 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
+
+
+;;; OCaml
+(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+(require 'merlin)
+(require 'company)
+
+(add-hook 'tuareg-mode-hook 'merlin-mode t)
+(add-to-list 'company-backends 'merlin-company-backend)
+(add-hook 'merlin-mode-hook 'company-mode)
+;; Enable auto-complete
+(setq merlin-use-auto-complete-mode 'easy)
+;; Use opam switch to lookup ocamlmerlin binary
+(setq merlin-command 'opam)
 
 
 ;;; Haskell

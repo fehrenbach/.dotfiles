@@ -116,17 +116,63 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;;; mu4e
 (require 'mu4e)
+(require 'smtpmail)
 (setq
  mu4e-change-filenames-when-moving t
  mu4e-drafts-folder "/Drafts"
- mu4e-headers-include-related t
- mu4e-headers-skip-duplicates t
+ ;; mu4e-headers-include-related t ;; toggle in view with 'W'
+ mu4e-headers-skip-duplicates t  ;; toggle in view with 'V'
  mu4e-maildir "~/Mail"
  ;; mu4e-refile-folder "/All Mail" ; see below
  mu4e-sent-folder "/Sent Mail"
  mu4e-trash-folder "/Bin"
  mu4e-update-interval 300
- mu4e-user-mail-address-list '("stefan.fehrenbach@gmail.com" "stefan.fehrenbach@ed.ac.uk" "s1437649@sms.ed.ac.uk"))
+ mu4e-user-mail-address-list '("stefan.fehrenbach@gmail.com" "stefan.fehrenbach@ed.ac.uk" "s1437649@sms.ed.ac.uk")
+ message-kill-buffer-on-exit t
+ message-send-mail-function 'smtpmail-send-it
+ smtpmail-auth-credentials "~/.netrc")
+
+
+(defvar my-mu4e-account-alist
+  '(("gmail"
+     (mu4e-reply-to-address "stefan.fehrenbach@gmail.com")
+     (mu4e-sent-messages-behavior delete)
+     (smtpmail-default-smtp-server "smtp.gmail.com")
+     (smtpmail-smtp-server "smtp.gmail.com")
+     (smtpmail-smtp-service 587)
+     (smtpmail-smtp-user "stefan.fehrenbach")
+     (smtpmail-stream-type starttls)
+     (user-mail-address "stefan.fehrenbach@gmail.com"))
+    ("edi"
+     (mu4e-reply-to-address "stefan.fehrenbach@ed.ac.uk")
+     (mu4e-sent-messages-behavior sent)
+     (smtpmail-default-smtp-server "smtp.staffmail.ed.ac.uk")
+     (smtpmail-smtp-server "smtp.staffmail.ed.ac.uk")
+     (smtpmail-smtp-service 587)
+     (smtpmail-smtp-user "s1437649")
+     (smtpmail-stream-type starttls)
+     (user-mail-address "stefan.fehrenbach@ed.ac.uk"))))
+
+(defun my-mu4e-set-account ()
+  "Set the account for composing a message."
+  (let* ((account (if nil ;; mu4e-compose-parent-message
+                      ;; TODO write dispatch code based on what address stuff was sent to, not the maildir 
+                      (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                        (string-match "/\\(.*?\\)/" maildir)
+                        (match-string 1 maildir))
+                    (completing-read (format "Compose with account: (%s) "
+                                             (mapconcat #'(lambda (var) (car var))
+                                                        my-mu4e-account-alist "/"))
+                                     (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                                     nil t nil nil (caar my-mu4e-account-alist))))
+         (account-vars (cdr (assoc account my-mu4e-account-alist))))
+    (if account-vars
+        (mapc #'(lambda (var)
+                  (set (car var) (cadr var)))
+              account-vars)
+      (error "No email account found"))))
+
+(add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
 (add-to-list 'mu4e-bookmarks
              '("maildir:/INBOX" "Inbox" ?i))

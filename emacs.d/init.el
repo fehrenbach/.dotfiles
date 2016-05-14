@@ -1,8 +1,3 @@
-;; ESS is not in MELPA or any of the other repos.
-;; Install AUR package `emacs-ess`.
-;(setq load-path (cons "/usr/share/emacs/site-lisp/ess" load-path))
-;(require 'ess-site)
-
 ;;; Proofgeneral from AUR package proofgeneral
 (load-file "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
 
@@ -16,10 +11,10 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-;(package-list-packages)
+;; (package-list-packages)
 (package-initialize)
 
-(dolist (package '(ace-jump-mode
+(dolist (package '(;; ace-jump-mode
                    aggressive-indent
                    auctex
                    better-defaults
@@ -27,16 +22,20 @@
                    circe
                    clojure-mode
                    company
-                   ghc
+                   company-math
+                   ess
+                   ;; ghc
                    haskell-mode
-                   helm ;; buggy?!
-                   hi2 ;; haskell indentation 2nd try
+                   ;; helm ;; buggy?!
+                   ;; hi2 ;; haskell indentation 2nd try
                    idris-mode
                    magit ;; buggy?!
                    markdown-mode
                    multiple-cursors
                    paredit
+                   ;; tide ; typescript, not in melpa stable...
                    tuareg ; ocaml mode
+                   web-mode
 
                    ;; dependencies of lean-mode
                    dash-functional
@@ -54,8 +53,6 @@
 
 ;;(global-visual-line-mode 1)
 (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
-
-;(add-hook 'after-init-hook 'global-company-mode)
 
 
 (defun smarter-move-beginning-of-line (arg)
@@ -107,11 +104,27 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
 
 ;; ;;; helm
-(require 'helm-config)
-(helm-mode 1)
+;; (require 'helm-config)
+;; (helm-mode 1)
 
-;;; org-mode
-(global-set-key (kbd "C-c a") 'org-agenda)
+;;; Highlight/bookmark a line
+(require 'bm)
+(global-set-key (kbd "<f10>") 'bm-toggle)
+
+
+(require 'company)
+(add-to-list 'company-backends 'company-math-symbols-unicode)
+(setq company-idle-delay 0.1)
+(add-hook 'after-init-hook 'global-company-mode)
+
+
+;; Support ANSI terminal escapes in compilation mode buffer
+(ignore-errors
+  (require 'ansi-color)
+  (defun my-colorize-compilation-buffer ()
+    (when (eq major-mode 'compilation-mode)
+      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
 
 ;;; mu4e
@@ -174,8 +187,14 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
-(add-to-list 'mu4e-bookmarks
-             '("maildir:/INBOX" "Inbox" ?i))
+(add-hook 'mu4e-compose-mode-hook (lambda ()
+                                    (auto-fill-mode -1)
+                                    (use-hard-newlines t 'guess)))
+
+(add-to-list 'mu4e-bookmarks '("maildir:/INBOX" "Inbox" ?i))
+;; This sucks because things may disappear under your feet: open "New", open a message, read it, decide to reply: doesn't work, because it's now read, thus not "New" anymore.
+;; (add-to-list 'mu4e-bookmarks '("maildir:/INBOX AND NOT flag:unread" "Todo" ?t))
+;; (add-to-list 'mu4e-bookmarks '("maildir:/INBOX AND flag:unread" "New" ?n))
 
 (setq mu4e-refile-folder
       (lambda (msg)
@@ -259,11 +278,43 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
 
+;;; Tide / TypeScript
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (tide-setup)
+            (flycheck-mode +1)
+            (setq flycheck-check-syntax-automatically '(save mode-enabled))
+            (eldoc-mode +1)
+            ;; company is an optional dependency. You have to
+            ;; install it separately via package-install
+            (company-mode-on)))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+;; format options
+(setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
+;; see https://github.com/Microsoft/TypeScript/blob/cc58e2d7eb144f0b2ff89e6a6685fb4deaa24fde/src/server/protocol.d.ts#L421-473 for the full list available options
+
+;; Tide can be used along with web-mode to edit tsx files
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (tide-setup)
+              (flycheck-mode +1)
+              (setq flycheck-check-syntax-automatically '(save mode-enabled))
+              (eldoc-mode +1)
+              (company-mode-on))))
+
 ;;; OCaml
 (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 (require 'merlin)
-(require 'company)
 
 (add-hook 'tuareg-mode-hook 'merlin-mode t)
 (add-to-list 'company-backends 'merlin-company-backend)
@@ -285,7 +336,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;(add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
-
+;;; ESS - R
+(require 'ess-site)
 
 ;; haskell-mode
 ;; (eval-after-load 'haskell-mode '(progn
@@ -318,6 +370,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'load-path "~/src/links/")
 (require 'links-mode)
 
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -330,7 +383,7 @@ point reaches the beginning or end of the buffer, stop there."
  '(compilation-scroll-output (quote first-error))
  '(completion-ignored-extensions
    (quote
-    (".agdai .run.xml" ".bcf" ".hi" ".cmti" ".cmt" ".annot" ".cmi" ".cmxa" ".cma" ".cmx" ".cmo" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".log" ".out" ".synctex.gz" ".pdf")))
+    (".agdai .run.xml" ".bcf" ".hi" ".cmti" ".cmt" ".annot" ".cmi" ".cmxa" ".cma" ".cmx" ".cmo" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".log" ".out" ".synctex.gz" ".pdf" ".fdb_latexmk" ".dvi" ".fls")))
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
  '(haskell-process-suggest-remove-import-lines t)

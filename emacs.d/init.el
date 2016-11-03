@@ -14,8 +14,8 @@
 ;; (require 'diminish)
 (require 'bind-key)
 
-;(menu-bar-mode -1)
-;(tool-bar-mode -1)
+;; (menu-bar-mode -1) ; Set by ~/.Xresource
+;; (tool-bar-mode -1) ; same
 (scroll-bar-mode -1)
 
 (ido-mode t)
@@ -42,6 +42,14 @@
       save-place-file (concat user-emacs-directory "places")
       backup-directory-alist `(("." . ,(concat user-emacs-directory
 					       "backups"))))
+
+
+(use-package psc-ide
+  :ensure t
+  :init
+  (add-hook 'purescript-mode-hook
+            (lambda ()
+              (psc-ide-mode))))
 
 (use-package purescript-mode
   :mode "\\.purs\\'"

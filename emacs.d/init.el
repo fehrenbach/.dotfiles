@@ -18,6 +18,7 @@
                    aggressive-indent
                    auctex
                    better-defaults
+                   bm
                    cider ;; buggy?!
                    circe
                    clojure-mode
@@ -33,6 +34,8 @@
                    markdown-mode
                    multiple-cursors
                    paredit
+                   purescript-mode
+                   ;; psc-ide ; not yet in MELPA stable
                    ;; tide ; typescript, not in melpa stable...
                    tuareg ; ocaml mode
                    web-mode
@@ -403,4 +406,4 @@ point reaches the beginning or end of the buffer, stop there."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
+ '(default ((t (:family "Hack" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))

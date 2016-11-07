@@ -44,6 +44,10 @@
 					       "backups"))))
 
 
+(use-package auctex
+  :ensure t
+  :mode ("\\.tex\\'" . latex-mode))
+
 (use-package psc-ide
   :ensure t
   :init
@@ -55,13 +59,33 @@
   :mode "\\.purs\\'"
   :ensure t)
 
+(use-package merlin
+  :ensure t
+  :init
+  (add-hook 'tuareg-mode-hook
+            'merlin-mode))
+
+(use-package tuareg
+  :mode ("\\.ml[liy]?\\'" . tuareg-mode)
+  :ensure t)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-view-program-selection
+   (quote
+    (((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "Okular")
+     (output-html "xdg-open"))))
  '(inhibit-startup-screen t)
- '(package-selected-packages (quote (use-package))))
+ '(package-selected-packages (quote (use-package)))
+ '(safe-local-variable-values (quote ((TeX-master . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

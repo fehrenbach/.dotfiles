@@ -43,21 +43,20 @@
       backup-directory-alist `(("." . ,(concat user-emacs-directory
 					       "backups"))))
 
-
 (use-package auctex
   :ensure t
   :mode ("\\.tex\\'" . latex-mode))
 
 (use-package psc-ide
   :ensure t
-  :init
-  (add-hook 'purescript-mode-hook
-            (lambda ()
-              (psc-ide-mode))))
+  :config
+  (add-hook 'purescript-mode-hook 'psc-ide-mode))
 
 (use-package purescript-mode
-  :mode "\\.purs\\'"
-  :ensure t)
+  :mode ("\\.purs\\'" . purescript-mode)
+  :ensure t
+  :config
+  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
 
 (use-package merlin
   :ensure t
@@ -68,6 +67,10 @@
 (use-package tuareg
   :mode ("\\.ml[liy]?\\'" . tuareg-mode)
   :ensure t)
+
+(use-package haskell-mode
+  :ensure t
+  :mode ("\\.hs\\'" . haskell-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -85,7 +88,9 @@
      (output-html "xdg-open"))))
  '(inhibit-startup-screen t)
  '(package-selected-packages (quote (use-package)))
- '(safe-local-variable-values (quote ((TeX-master . t)))))
+ '(safe-local-variable-values
+   (quote
+    ((TeX-master . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -76,6 +76,10 @@
   :load-path "~/src/links/"
   :mode ("\\.links\\'" . links-mode))
 
+(use-package magit
+  :ensure t
+  :bind ("C-c s" . magit-status))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -91,10 +95,8 @@
      (output-pdf "Okular")
      (output-html "xdg-open"))))
  '(inhibit-startup-screen t)
- '(package-selected-packages (quote (use-package)))
- '(safe-local-variable-values
-   (quote
-    ((TeX-master . t)))))
+ '(package-selected-packages (quote (magit use-package)))
+ '(safe-local-variable-values (quote ((TeX-master . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -72,6 +72,10 @@
   :ensure t
   :mode ("\\.hs\\'" . haskell-mode))
 
+(use-package links-mode
+  :load-path "~/src/links/"
+  :mode ("\\.links\\'" . links-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -17,6 +17,7 @@
 ;; (menu-bar-mode -1) ; Set by ~/.Xresource
 ;; (tool-bar-mode -1) ; same
 (scroll-bar-mode -1)
+(save-place-mode 1)
 
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -43,9 +44,19 @@
       backup-directory-alist `(("." . ,(concat user-emacs-directory
 					       "backups"))))
 
+(use-package stuff
+  :ensure nil
+  :load-path "~/.emacs.d/lisp"
+  :bind ("C-c c" . comment-or-uncomment-region-or-line))
+
 (use-package auctex
   :ensure t
-  :mode ("\\.tex\\'" . latex-mode))
+  :mode ("\\.tex\\'" . latex-mode)
+  :init (add-hook 'LaTeX-mode-hook #'turn-on-reftex))
+
+(use-package reftex
+  :commands turn-on-reftex
+  :init (setq reftex-plug-into-AUCTeX t))
 
 (use-package psc-ide
   :ensure t
@@ -73,12 +84,17 @@
   :mode ("\\.hs\\'" . haskell-mode))
 
 (use-package links-mode
+  :ensure nil
   :load-path "~/src/links/"
   :mode ("\\.links\\'" . links-mode))
 
 (use-package magit
   :ensure t
   :bind ("C-c s" . magit-status))
+
+;;; ProofGeneral ;; proofgeneral package on AUR
+(load "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site")
+;;; TODO move to use-package?
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -94,6 +110,9 @@
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open"))))
+ '(completion-ignored-extensions
+   (quote
+    (".agdai .run.xml" ".bcf" ".hi" ".cmti" ".cmt" ".annot" ".cmi" ".cmxa" ".cma" ".cmx" ".cmo" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".log" ".out" ".synctex.gz" ".pdf" ".fdb_latexmk" ".dvi" ".fls" ".spl" ".glob" ".v.d" ".vo")))
  '(inhibit-startup-screen t)
  '(package-selected-packages (quote (magit use-package)))
  '(safe-local-variable-values (quote ((TeX-master . t)))))

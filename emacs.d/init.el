@@ -92,6 +92,11 @@
   :ensure t
   :bind ("C-c s" . magit-status))
 
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)))
+
 ;;; ProofGeneral ;; proofgeneral package on AUR
 (load "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site")
 ;;; TODO move to use-package?

@@ -58,6 +58,15 @@
   :commands turn-on-reftex
   :init (setq reftex-plug-into-AUCTeX t))
 
+(use-package company
+  :ensure t
+  :init (add-hook 'after-init-hook #'global-company-mode))
+
+(use-package flycheck
+  :ensure t
+  :commands (global-flycheck-mode)
+  :init (add-hook 'after-init-hook #'global-flycheck-mode))
+
 (use-package psc-ide
   :ensure t
   :config

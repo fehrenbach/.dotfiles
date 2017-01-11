@@ -97,6 +97,10 @@
   :load-path "~/src/links/"
   :mode ("\\.links\\'" . links-mode))
 
+(use-package ledger-mode
+  :ensure t
+  :mode ("\\.ledger\\'" . ledger-mode))
+
 (use-package magit
   :ensure t
   :bind ("C-c s" . magit-status))

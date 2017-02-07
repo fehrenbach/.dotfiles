@@ -1,0 +1,9 @@
+VerbEnvir
+{
+  verbatim lstlisting
+}
+
+WipeArg
+{
+  \lstinline:[]{}
+}

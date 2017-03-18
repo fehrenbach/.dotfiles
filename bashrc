@@ -11,12 +11,17 @@ alias sshx='ssh -XC'
 alias ls='ls -v --color=auto'
 alias links='rlwrap links'
 
-export EDITOR='emacs -nw'
+export EDITOR='vim'
 
-HISTCONTROL=erasedups
+export HISTCONTROL=erasedups
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTFILE=~/.bash_eternal_history
 
 # Tell Java that XMonad is nonreparenting
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+export OCAMLRUNPARAM=b
 
 #Colorful prompt, shows current git branch                                                                
 #TODO: Use a separate color for every host. Hash or dispatch manually.

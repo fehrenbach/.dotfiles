@@ -67,16 +67,20 @@
   ;; :init (add-hook 'after-init-hook #'global-flycheck-mode)
   )
 
-(use-package psc-ide
-  :ensure t
-  :config
-  (add-hook 'purescript-mode-hook 'psc-ide-mode))
+;; Used by psc-ide to suggest project root directory
+(use-package projectile
+  :ensure t)
 
 (use-package purescript-mode
   :mode ("\\.purs\\'" . purescript-mode)
   :ensure t
   :config
   (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
+
+(use-package psc-ide
+  :ensure t
+  :config
+  (add-hook 'purescript-mode-hook 'psc-ide-mode))
 
 (use-package merlin
   :ensure t

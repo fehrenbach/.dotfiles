@@ -1,5 +1,4 @@
 import XMonad
-import XMonad.Actions.UpdatePointer
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -57,19 +56,8 @@ myKeys =
 myLayoutHook = (smartBorders $ desktopLayoutModifiers $ (reflectHoriz tall)) ||| (smartBorders $ desktopLayoutModifiers $ Mirror tall) ||| noBorders Full
   where tall = (Tall 1 (3/100) (1/2))
 
--- mouse pointer follows focus
--- to reactivate: readd to the config! not just uncomment the following line
--- myLogHook = updatePointer (Relative 0.618 0.618)
-
---liftedNot = liftM not
-
 myManageHook = composeAll
-               [className =? "Choqok" --> doF (W.shift "8"), 
-                className =? "Kopete" --> doF (W.shift "8"),
-                className =? "Quasselclient" --> doF (W.shift "8"),
-                className =? "Skype" --> doF (W.shift "8"),
-                className =? "Kontact" --> doF (W.shift "7"),
-                className =? "Vlc" --> doFloat,
+               [className =? "Vlc" --> doFloat,
                 className =? "Klipper" --> doFloat,
                 className =? "plasmashell" --> doFloat
 --                className =? "dota_linux" --> doFullFloat,
@@ -78,8 +66,7 @@ myManageHook = composeAll
                 ]
 
 myStartupHook = do
---                  spawn "kioclient exec /home/stefan/bin/Facebook.desktop"
-                  setWMName "LG3D" -- fix Java GUI
+  setWMName "LG3D" -- fix Java GUI
 
 -- Plasma stuff from http://code.google.com/p/xmonad/issues/detail?id=430
 kdeOverride = ask >>= \w -> liftX $ do
@@ -92,7 +79,6 @@ main = xmonad $ desktopConfig
    terminal = "konsole",
    normalBorderColor = "#000000",
    focusedBorderColor = "#FF0000", -- "#2B74C7",
-   -- borderWidth = 2,
    focusFollowsMouse = True,
    manageHook = myManageHook <+> (kdeOverride --> doFloat) <+> manageHook desktopConfig,
    layoutHook = myLayoutHook,

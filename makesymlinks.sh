@@ -10,7 +10,7 @@
 dir=~/.dotfiles                    # dotfiles directory
 olddir=~/.dotfiles/backup          # old dotfiles backup directory
 # list of files/folders to symlink in homedir
-files="bashrc bash_profile chktexrc emacs.d gitconfig mbsyncrc xmonad Xresources"
+files="bashrc bash_profile chktexrc emacs.d gitconfig mbsyncrc npmrc xmonad Xresources"
 
 ##########
 

@@ -13,7 +13,7 @@ alias links='rlwrap links'
 
 export EDITOR='vim'
 
-export HISTCONTROL=erasedups
+export HISTCONTROL=erasedups:ignorespace
 export HISTFILESIZE=
 export HISTSIZE=
 export HISTFILE=~/.bash_eternal_history

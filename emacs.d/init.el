@@ -92,9 +92,16 @@
   :mode ("\\.ml[liy]?\\'" . tuareg-mode)
   :ensure t)
 
+;; (use-package intero
+  ;; :ensure t
+  ;; :commands intero-mode)
+
 (use-package haskell-mode
   :ensure t
-  :mode ("\\.hs\\'" . haskell-mode))
+  :mode ("\\.hs\\'" . haskell-mode)
+  ;; :config
+  ;; (add-hook 'haskell-mode-hook 'intero-mode))
+  )
 
 (use-package idris-mode
   :ensure t
@@ -112,6 +119,10 @@
 (use-package magit
   :ensure t
   :bind ("C-c s" . magit-status))
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.md\\'" . markdown-mode))
 
 (use-package multiple-cursors
   :ensure t
@@ -155,7 +166,10 @@
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Documents/journal.org")))
  '(proof-splash-enable nil)
- '(safe-local-variable-values (quote ((TeX-master)))))
+ '(safe-local-variable-values
+   (quote
+    ((reftex-default-bibliography "bib.bib")
+     (TeX-master)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

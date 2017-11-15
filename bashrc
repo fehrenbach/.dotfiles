@@ -11,7 +11,7 @@ alias sshx='ssh -XC'
 alias ls='ls -v --color=auto'
 alias links='rlwrap links'
 
-export EDITOR='vim'
+export EDITOR='vim +star'
 
 export HISTCONTROL=erasedups
 export HISTFILESIZE=

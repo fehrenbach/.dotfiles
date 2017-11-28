@@ -51,7 +51,25 @@
 (use-package auctex
   :ensure t
   :mode ("\\.tex\\'" . latex-mode)
-  :init (add-hook 'LaTeX-mode-hook #'turn-on-reftex))
+  :init (progn
+          (setq TeX-source-correlate-method 'synctex
+                TeX-PDF-mode t
+                TeX-view-program-selection '((output-pdf "Okular"))
+                TeX-view-program-list '(("Okular" "okular --unique --noraise %u")))
+          (add-hook 'LaTeX-mode-hook (lambda ()
+                                       (add-to-list 'TeX-expand-list
+                                                    '("%u" (lambda ()
+                                                             (concat
+                                                              "file://"
+                                                              (expand-file-name (funcall file (TeX-output-extension) t)
+                                                                                (file-name-directory (TeX-master-file)))
+                                                              "#src:"
+                                                              (TeX-current-line)
+                                                              (expand-file-name (TeX-master-directory))
+                                                              "./"
+                                                              (TeX-current-file-name-master-relative)))))))
+          (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
+          (add-hook 'LaTeX-mode-hook #'server-start)))
 
 (use-package reftex
   :commands turn-on-reftex
@@ -148,17 +166,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting")))
+ '(LaTeX-command "latex -synctex=1")
  '(TeX-master nil)
  '(TeX-save-query nil)
- '(TeX-view-program-selection
-   (quote
-    (((output-dvi has-no-display-manager)
-      "dvi2tty")
-     ((output-dvi style-pstricks)
-      "dvips and gv")
-     (output-dvi "xdvi")
-     (output-pdf "Okular")
-     (output-html "xdg-open"))))
  '(completion-ignored-extensions
    (quote
     (".agdai .run.xml" ".bcf" ".hi" ".cb" ".cb2" ".cmti" ".cmt" ".annot" ".cmi" ".cmxa" ".cma" ".cmx" ".cmo" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".log" ".out" ".synctex.gz" ".pdf" ".fdb_latexmk" ".dvi" ".fls" ".spl" ".glob" ".v.d" ".vo" ".ibc")))

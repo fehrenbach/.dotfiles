@@ -110,16 +110,15 @@
   :mode ("\\.ml[liy]?\\'" . tuareg-mode)
   :ensure t)
 
-;; (use-package intero
-  ;; :ensure t
-  ;; :commands intero-mode)
+(use-package intero
+  :ensure t
+  :commands intero-mode)
 
 (use-package haskell-mode
   :ensure t
   :mode ("\\.hs\\'" . haskell-mode)
-  ;; :config
-  ;; (add-hook 'haskell-mode-hook 'intero-mode))
-  )
+  :config
+  (add-hook 'haskell-mode-hook 'intero-mode))
 
 (use-package idris-mode
   :ensure t
@@ -169,8 +168,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting")))
  '(LaTeX-command "latex -synctex=1")
+ '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting")))
  '(TeX-master nil)
  '(TeX-save-query nil)
  '(completion-ignored-extensions
@@ -179,6 +178,9 @@
  '(ido-enable-flex-matching t)
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Documents/journal.org")))
+ '(package-selected-packages
+   (quote
+    (intero yaml-mode web-mode use-package tuareg purescript-mode psc-ide projectile multiple-cursors merlin markdown-mode magit ledger-mode idris-mode hledger-mode haskell-mode company-coq auctex)))
  '(proof-splash-enable nil)
  '(safe-local-variable-values
    (quote

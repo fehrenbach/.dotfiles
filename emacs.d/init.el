@@ -71,6 +71,10 @@
           (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
           (add-hook 'LaTeX-mode-hook #'server-start)))
 
+(use-package writegood-mode
+  :ensure t
+  :config (add-hook 'LaTeX-mode-hook 'writegood-mode))
+
 (use-package reftex
   :commands turn-on-reftex
   :init (setq reftex-plug-into-AUCTeX t))
@@ -156,6 +160,10 @@
   :defer t ;; not sure this is harmful, needed, or useful..
   :init (add-hook 'coq-mode-hook #'company-coq-mode))
 
+(use-package nix-mode
+  :ensure t
+  :mode "\\.nix\\'")
+
 (use-package yaml-mode
   :ensure t
   :mode "\\.yaml\\'")
@@ -171,6 +179,7 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting")))
+ '(LaTeX-verbatim-macros-with-delims (quote ("lstinline" "verb*" "verb")))
  '(TeX-master nil)
  '(TeX-save-query nil)
  '(completion-ignored-extensions
@@ -179,14 +188,12 @@
  '(ido-enable-flex-matching t)
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Documents/journal.org")))
- '(package-selected-packages
-   (quote
-    (intero yaml-mode web-mode use-package tuareg purescript-mode psc-ide projectile multiple-cursors merlin markdown-mode magit ledger-mode idris-mode hledger-mode haskell-mode company-coq auctex)))
  '(proof-splash-enable nil)
  '(safe-local-variable-values
    (quote
     ((reftex-default-bibliography "bib.bib")
-     (TeX-master)))))
+     (TeX-master))))
+ '(sentence-end-double-space nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
